@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper.Internal.Mappers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,6 +44,7 @@ namespace E_Commerce.Application.Common
         public static Result<T> Ok(T value) => new Result<T>(value);
         public static new Result<T> Fail(Error error) => new Result<T>(error);
         public static new Result<T> Fail(IReadOnlyList <Error> error) => new Result<T>(error);
+
     }
 
 }
