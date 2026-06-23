@@ -26,9 +26,9 @@ namespace E_Commerce.API.Controllers
         }
         //Get Product By Id
         [HttpGet("{id}")]
-        public ActionResult<Result<ProductDto>> GetProductById(int id, CancellationToken ct)
+        public async Task<ActionResult<Result<ProductDto>>> GetProductById(int id, CancellationToken ct)
         {
-            var result = productService.GetProductByIdAsync(id, ct);
+            var result = await productService.GetProductByIdAsync(id, ct);
             return Ok(result);
         }
         //Get All Types
