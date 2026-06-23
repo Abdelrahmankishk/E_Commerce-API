@@ -1,5 +1,6 @@
 ﻿using E_Commerce.Domain.Common;
 using E_Commerce.Domain.Contracts;
+using E_Commerce.Domain.Entities.Products;
 using E_Commerce.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,19 @@ namespace E_Commerce.Infrastructure.DataSeeding
                 // "D:\Full Stack Diploma\Backend\09 API\E Commerce APP\E_Commerce\E_Commerce.API\bin\Debug\net8.0\DataSeed\products.json"
                 var seedDataPath = Path.Combine(AppContext.BaseDirectory, "DataSeed");
 
-                var productsFilePath = Path.Combine(seedDataPath, "products.json");
+                await SeedIfEmptyAsync<ProductBrand, int>(seedDataPath, "brands.json", ct);
+                await SeedIfEmptyAsync<ProductType, int>(seedDataPath, "types.json", ct);
+                await SeedIfEmptyAsync<Product, int>(seedDataPath, "products.json", ct);
+
+               int result =  await dbContext.SaveChangesAsync(ct);
+                if(result > 0)
+                {
+                    logger.LogInformation($"{result} Rows Added");
+                }
+                else
+                {
+                    logger.LogInformation("No new data was seeded.");
+                }
             }
             catch { }
         }
