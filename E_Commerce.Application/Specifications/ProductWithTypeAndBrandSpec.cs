@@ -12,7 +12,7 @@ namespace E_Commerce.Application.Specifications
     internal class ProductWithTypeAndBrandSpec : BaseSpecification<Product,int>
     {
         //Get All
-        public ProductWithTypeAndBrandSpec(ProductQueryParams queryParams) : base(p => (!queryParams.BrandId.HasValue || p.BrandId == queryParams.BrandId.Value) && (!queryParams.TypeId.HasValue || p.TypeId == queryParams.TypeId.Value))
+        public ProductWithTypeAndBrandSpec(ProductQueryParams queryParams) : base(p => (!queryParams.BrandId.HasValue || p.BrandId == queryParams.BrandId.Value) && (!queryParams.TypeId.HasValue || p.TypeId == queryParams.TypeId.Value) && (string.IsNullOrWhiteSpace(queryParams.SearchValue) || p.Name.ToLower().Contains(queryParams.SearchValue.ToLower())))
         {
             AddIncludeExp(P => P.ProductType);
             AddIncludeExp(P => P.ProductBrand);
