@@ -35,6 +35,7 @@ namespace E_Commerce.Application.Specifications
                     AddOrderBy(P => P.Id);
                     break;
             }
+            ApplyPagination(queryParams.PageSize,queryParams.PageIndex);
         }
 
         //Get Product by ID

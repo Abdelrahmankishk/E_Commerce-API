@@ -15,5 +15,9 @@ namespace E_Commerce.Domain.Contracts
 
         Expression<Func<TEntity,object>>? OrderBy { get; }
         Expression<Func<TEntity,object>>? OrderByDesc { get; }
+
+         int Take { get;  }
+         int Skip { get;  }
+        bool IsPaginated { get; }
     }
 }
