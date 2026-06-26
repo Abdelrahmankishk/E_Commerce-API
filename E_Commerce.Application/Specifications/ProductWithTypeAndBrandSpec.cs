@@ -1,4 +1,5 @@
-﻿using E_Commerce.Domain.Contracts;
+﻿using E_Commerce.Application.Common;
+using E_Commerce.Domain.Contracts;
 using E_Commerce.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace E_Commerce.Application.Specifications
     internal class ProductWithTypeAndBrandSpec : BaseSpecification<Product,int>
     {
         //Get All
-        public ProductWithTypeAndBrandSpec(int? BrandId, int? TypeID) : base(p => (!BrandId.HasValue || p.BrandId == BrandId.Value) && (!TypeID.HasValue || p.TypeId == TypeID.Value))
+        public ProductWithTypeAndBrandSpec(ProductQueryParams queryParams) : base(p => (!queryParams.BrandId.HasValue || p.BrandId == queryParams.BrandId.Value) && (!queryParams.TypeId.HasValue || p.TypeId == queryParams.TypeId.Value))
         {
             AddIncludeExp(P => P.ProductType);
             AddIncludeExp(P => P.ProductBrand);
