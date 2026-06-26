@@ -14,6 +14,18 @@ namespace E_Commerce.Application.Specifications
         public ICollection<Expression<Func<TEntity, object>>> IncludesExp { get; } = [];
         public Expression<Func<TEntity, bool>> Criteria { get; private set; }
 
+        public Expression<Func<TEntity, object>>? OrderBy { get; private set; }
+
+        public Expression<Func<TEntity, object>>? OrderByDesc { get; private set; }
+
+        protected void AddOrderBy(Expression<Func<TEntity, object>> OrderByExp)
+        {
+            OrderBy = OrderByExp;
+        }
+        protected void AddOrderByDesc(Expression<Func<TEntity, object>> OrderByDescExp)
+        {
+            OrderByDesc = OrderByDescExp;
+        }
         protected BaseSpecification(Expression<Func<TEntity, bool>> criteria)
         {
             Criteria = criteria;

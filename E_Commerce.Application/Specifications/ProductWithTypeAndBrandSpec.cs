@@ -16,6 +16,25 @@ namespace E_Commerce.Application.Specifications
         {
             AddIncludeExp(P => P.ProductType);
             AddIncludeExp(P => P.ProductBrand);
+
+            switch (queryParams.Sort)
+            {
+                case ProductSort.NameAscending:
+                    AddOrderBy(P => P.Name);
+                        break;
+                case ProductSort.NameDescending:
+                    AddOrderByDesc(P => P.Name);
+                    break;
+                case ProductSort.PriceAscending:
+                    AddOrderBy(P => P.Price);
+                    break;
+                case ProductSort.PriceDescending:
+                    AddOrderByDesc(P => P.Price);
+                    break;
+                default:
+                    AddOrderBy(P => P.Id);
+                    break;
+            }
         }
 
         //Get Product by ID
