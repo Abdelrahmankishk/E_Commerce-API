@@ -14,7 +14,10 @@ namespace E_Commerce.Infrastructure.Specifications
         public static IQueryable<TEntity> CreateQuery<TEntity,Tkey>(IQueryable<TEntity> QueryStart, ISpecifications<TEntity,Tkey> Spec) where TEntity : BaseEntity<Tkey>
         {
             var query = QueryStart;
-
+            if(Spec.Criteria != null)
+            {
+                query = query.Where(Spec.Criteria);
+            }
             if (Spec.IncludesExp.Any())
             {
                 query = Spec.IncludesExp.Aggregate(query, (current, nextExp) => current.Include(nextExp));

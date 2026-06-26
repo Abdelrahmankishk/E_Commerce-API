@@ -41,6 +41,12 @@ namespace E_Commerce.Infrastructure.Repositories
             return await dbContext.Set<T>().FindAsync(id, ct);
         }
 
+        public async Task<T?> GetByIdAsync(ISpecifications<T, TKey> specifications, CancellationToken ct = default)
+        {
+           var query =  SpecEvaluator.CreateQuery(dbContext.Set<T>(), specifications);
+            return await query.FirstOrDefaultAsync();
+        }
+
         public void Update(T entity)
         {
             dbContext.Set<T>().Update(entity);
