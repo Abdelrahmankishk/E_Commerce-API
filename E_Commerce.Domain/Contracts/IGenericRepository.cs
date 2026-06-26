@@ -14,5 +14,6 @@ namespace E_Commerce.Domain.Contracts
         void Delete(T entity);
         Task<T?> GetByIdAsync(TKey id, CancellationToken ct = default);
         Task<IEnumerable<T>> GetAllAsync(CancellationToken ct = default);
+        Task<IEnumerable<T>> GetAllAsync(ISpecifications<T,TKey> specifications,CancellationToken ct = default);
     }
 }
