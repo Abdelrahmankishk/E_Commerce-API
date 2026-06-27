@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.Domain.Contracts
 {
-    internal interface IBasketRepository
+    public interface IBasketRepository
     {
         Task<CustomerBasket?> GetBasketAsync(string id, CancellationToken ct = default);
         Task<CustomerBasket?> CreateOrUpdateBasketAsync(CustomerBasket basket, TimeSpan? TimeToStay = default, CancellationToken ct = default);
