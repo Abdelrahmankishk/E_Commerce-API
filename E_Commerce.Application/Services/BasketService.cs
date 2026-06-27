@@ -27,7 +27,7 @@ namespace E_Commerce.Application.Services
 
             var basketResult = await basketRepository.CreateOrUpdateBasketAsync(customerBasket, TimeToStay, ct);
 
-            if (basketResult != null)
+            if (basketResult == null)
             {
                 return Result<BasketDto>.Fail(Error.Failure("BasketCreate.Failure", "Can Not Create Or Update Basket"));
             }else
