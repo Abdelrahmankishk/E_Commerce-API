@@ -1,0 +1,50 @@
+﻿using E_Commerce.Domain.Contracts;
+using E_Commerce.Domain.Entities.Baskets;
+using Microsoft.Extensions.Caching.Distributed;
+using StackExchange.Redis;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+namespace E_Commerce.Infrastructure.Repositories
+{
+    internal class BasketRepository : IBasketRepository
+    {
+        private readonly IDatabase database;
+        public BasketRepository(IConnectionMultiplexer connection) 
+        {
+            database = connection.GetDatabase();
+        }
+        public async Task<CustomerBasket?> CreateOrUpdateBasketAsync(CustomerBasket basket, TimeSpan? TimeToStay = null, CancellationToken ct = default)
+        {
+            var value = JsonSerializer.Serialize(basket);
+           var result = await database.StringSetAsync(basket.Id, value, TimeToStay ?? TimeSpan.FromDays(7));
+
+            if(result)
+            {
+                return basket;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteBasketAsync(string id, CancellationToken ct = default)
+        {
+            return await database.KeyDeleteAsync(id);
+        }
+
+        public async Task<CustomerBasket?> GetBasketAsync(string id, CancellationToken ct = default)
+        {
+            var basket = await database.StringGetAsync(id);
+            if (basket.IsNullOrEmpty) 
+                return null;
+            else 
+                return JsonSerializer.Deserialize<CustomerBasket>(basket!);
+        }
+    }
+}
