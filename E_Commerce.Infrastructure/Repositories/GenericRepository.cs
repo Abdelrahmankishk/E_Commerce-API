@@ -38,7 +38,7 @@ namespace E_Commerce.Infrastructure.Repositories
 
                 var query = SpecEvaluator.CreateQuery(dbContext.Set<T>(), specifications);
 
-            return await query.ToArrayAsync(ct);
+            return await query.ToListAsync(ct);
         }
 
         public async Task<T?> GetByIdAsync(TKey id, CancellationToken ct = default)

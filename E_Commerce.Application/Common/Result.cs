@@ -45,6 +45,8 @@ namespace E_Commerce.Application.Common
         public static new Result<T> Fail(Error error) => new Result<T>(error);
         public static new Result<T> Fail(IReadOnlyList <Error> error) => new Result<T>(error);
 
+        public static implicit operator Result<T>(T value) => Ok(value);
+        public static implicit operator Result<T>(Error error) => Fail(error);
     }
 
 }
