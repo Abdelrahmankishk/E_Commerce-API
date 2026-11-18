@@ -58,7 +58,7 @@ namespace E_Commerce.Application.Services
             }
             else
             {
-                return Result< BasketDto>.Ok(mapper.Map<BasketDto>(basket));
+                return mapper.Map<BasketDto>(basket);
             }
         }
     }
