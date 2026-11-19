@@ -39,4 +39,13 @@ public class AuthenticationController : ApiBaseController
 
         return ToActionResult(await _authenticationService.GetCurrentUserAsync(email, ct));
     }
+
+    [Authorize]
+    [HttpGet("Address")]
+
+    public async Task<ActionResult<AddressDto>> GetCurrentUserAddress(CancellationToken ct)
+    {
+        return ToActionResult(await _authenticationService.GetUserAddressAsync(GetEmailFromToken(), ct));
+    }
+
 }
