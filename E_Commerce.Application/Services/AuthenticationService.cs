@@ -14,6 +14,12 @@ internal class AuthenticationService : IAuthenticationService
         _identityService = identityService;
         _tokenService = tokenService;
     }
+
+    public async Task<Result<bool>> CheckEmailExistsAsync(string email, CancellationToken ct = default)
+    {
+        return await _identityService.CheckEmailExists(email, ct);
+    }
+
     public async Task<Result<UserDto>> LoginAsync(LoginDto loginDto, CancellationToken ct = default)
     {
         //Get User By Email

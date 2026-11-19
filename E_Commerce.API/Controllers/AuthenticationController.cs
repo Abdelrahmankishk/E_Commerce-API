@@ -23,4 +23,9 @@ public class AuthenticationController : ApiBaseController
     {
        return ToActionResult(await _authenticationService.RegisterAsync(registerDto, ct));
     }
+    [HttpGet("emailexists")]
+    public async Task<ActionResult<bool>> CheckEmail([FromQuery]string email, CancellationToken ct)
+    {
+        return ToActionResult(await _authenticationService.CheckEmailExistsAsync(email, ct));
+    }
 }
