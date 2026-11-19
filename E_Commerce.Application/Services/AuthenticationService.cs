@@ -35,4 +35,20 @@ internal class AuthenticationService : IAuthenticationService
         });
 
     }
+
+    public async Task<Result<UserDto>> RegisterAsync(RegisterDto registerDto, CancellationToken ct = default)
+    {
+        var userResult = await _identityService.CreateUserAsync(registerDto, ct);
+        if (!userResult.isSuccess)
+            return Result<UserDto>.Fail(userResult.Errors);
+
+        var user = userResult.data;
+
+        return Result<UserDto>.Ok(new UserDto()
+        {
+            Email = user.Email,
+            DisplayName = user.DisplayName,
+            Token = "token"
+        });
+    }
 }
