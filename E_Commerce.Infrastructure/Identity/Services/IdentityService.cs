@@ -54,4 +54,16 @@ internal class IdentityService: IIdentityService
         else
             return Result<IdentityUserResult>.Ok(new IdentityUserResult(user.Id, user.DisplayName, user.Email, user.UserName));
     }
+
+    public async Task<Result<IReadOnlyList<string>>> GetUserRoles(string email, CancellationToken ct = default)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user == null)
+            return Error.NotFound("User Not Found", $"User With Email : {email} is not found");
+
+        var roles = await _userManager.GetRolesAsync(user);
+
+        return roles.ToList();
+    }
 }

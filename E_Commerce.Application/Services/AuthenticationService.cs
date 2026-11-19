@@ -7,10 +7,12 @@ namespace E_Commerce.Application.Services;
 internal class AuthenticationService : IAuthenticationService
 {
     private readonly IIdentityService _identityService;
+    private readonly ITokenService _tokenService;
 
-    public AuthenticationService(IIdentityService identityService)
+    public AuthenticationService(IIdentityService identityService,ITokenService tokenService)
     {
         _identityService = identityService;
+        _tokenService = tokenService;
     }
     public async Task<Result<UserDto>> LoginAsync(LoginDto loginDto, CancellationToken ct = default)
     {
@@ -27,11 +29,16 @@ internal class AuthenticationService : IAuthenticationService
         if (!passwordResult.data)
             return Result<UserDto>.Fail(Error.Unauthorized("Invalid email or password."));
 
+        var user = userResult.data;
+        var rolesResult = await _identityService.GetUserRoles(user.Email);
+        var roles = rolesResult.data;
+        var token = _tokenService.CreateToken(user.Id, user.Email, user.UserName, roles);
+
         return Result<UserDto>.Ok(new UserDto()
         {
             Email = loginDto.Email,
             DisplayName = userResult.data.DisplayName,
-            Token = "token"
+            Token = token
         });
 
     }
