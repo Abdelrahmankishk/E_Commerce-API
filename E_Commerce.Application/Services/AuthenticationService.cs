@@ -20,6 +20,22 @@ internal class AuthenticationService : IAuthenticationService
         return await _identityService.CheckEmailExists(email, ct);
     }
 
+    public async Task<Result<UserDto>> GetCurrentUserAsync(string email, CancellationToken ct = default)
+    {
+       var result = await _identityService.FindUserByEmailAsync(email, ct);
+        var user = result.data;
+
+        var roleResult = await _identityService.GetUserRoles(email, ct);
+        var token = _tokenService.CreateToken(user.Id, user.Email, user.UserName, roleResult.data);
+        return new UserDto()
+        {
+            Email = user.Email,
+            DisplayName = user.DisplayName,
+            Token = token
+        };
+
+    }
+
     public async Task<Result<UserDto>> LoginAsync(LoginDto loginDto, CancellationToken ct = default)
     {
         //Get User By Email
