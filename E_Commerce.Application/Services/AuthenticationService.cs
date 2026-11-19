@@ -87,4 +87,9 @@ internal class AuthenticationService : IAuthenticationService
             Token = token
         });
     }
+
+    public async Task<Result<AddressDto>> UpSertUserAddressAsync(string email, AddressDto addressDto, CancellationToken ct = default)
+    {
+        return await _identityService.UpdateOrInsertUserAddressAsync(email, addressDto, ct);
+    }
 }

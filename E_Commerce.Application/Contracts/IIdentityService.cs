@@ -12,4 +12,5 @@ public interface IIdentityService
     Task<Result<IReadOnlyList<string>>> GetUserRoles(string email, CancellationToken ct = default);
     Task<Result<bool>> CheckEmailExists(string email, CancellationToken ct = default);
     Task<Result<AddressDto>> GetUserAddressByEmailAsync(string email, CancellationToken ct = default);
+    Task<Result<AddressDto>> UpdateOrInsertUserAddressAsync(string email, AddressDto addressDto, CancellationToken ct = default);
 }

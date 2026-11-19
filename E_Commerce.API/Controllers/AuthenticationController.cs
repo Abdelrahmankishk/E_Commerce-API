@@ -48,4 +48,10 @@ public class AuthenticationController : ApiBaseController
         return ToActionResult(await _authenticationService.GetUserAddressAsync(GetEmailFromToken(), ct));
     }
 
+    [Authorize]
+    [HttpPut("Address")]
+    public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto addressDto, CancellationToken ct = default)
+    {
+        return ToActionResult(await _authenticationService.UpSertUserAddressAsync(GetEmailFromToken(), addressDto, ct));
+    }
 }
