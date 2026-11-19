@@ -50,12 +50,14 @@ internal class AuthenticationService : IAuthenticationService
             return Result<UserDto>.Fail(userResult.Errors);
 
         var user = userResult.data;
-
+        var rolesResult = await _identityService.GetUserRoles(user.Email);
+        var roles = rolesResult.data;
+        var token = _tokenService.CreateToken(user.Id, user.Email, user.UserName, roles);
         return Result<UserDto>.Ok(new UserDto()
         {
             Email = user.Email,
             DisplayName = user.DisplayName,
-            Token = "token"
+            Token = token
         });
     }
 }
