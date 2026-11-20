@@ -75,4 +75,24 @@ internal class PaymentService : IPaymentService
 
         return _mapper.Map<BasketDto>(basket);
     }
+
+    public async Task PaymentFailed(string paymentIntentId)
+    {
+        var order = await _unitOfWork.GetRepository<Order, Guid>()
+            .GetByIdAsync(new PaymentIntentSpec(paymentIntentId));
+        if (order == null)
+            return;
+        order.Status = OrderStatus.PaymentFailed;
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task PaymentSucceed(string paymentIntentId)
+    {
+        var order = await _unitOfWork.GetRepository<Order, Guid>()
+            .GetByIdAsync(new PaymentIntentSpec(paymentIntentId));
+        if (order == null)
+            return;
+        order.Status = OrderStatus.PaymentReceived;
+        await _unitOfWork.SaveChangesAsync();
+    }
 }

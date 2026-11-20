@@ -4,4 +4,5 @@ public class PaymentGatwaySettings
 {
     public string SecretKey { get; set; } = default!;
     public string DefaultCurrency { get; set; } = default!;
+    public string WebHookSecret { get; set; }
 }
