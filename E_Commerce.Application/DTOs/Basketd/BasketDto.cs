@@ -14,7 +14,7 @@ namespace E_Commerce.Application.DTOs.Basketd
         public string? ClientSecret { get; set; }
         public string? PaymentIntentId { get; set; }
         public int? DeliveyMethodId { get; set; }
-        public int? ShippingPrice { get; set; }
+        public decimal? ShippingPrice { get; set; }
 
     }
 }
