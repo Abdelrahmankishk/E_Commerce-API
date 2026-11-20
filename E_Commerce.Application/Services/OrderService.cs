@@ -104,6 +104,20 @@ internal class OrderService : IOrderService
         }
     }
 
+    public async Task<Result<IReadOnlyList<DeliveryMethodDto>>> GetDeliveryMethodsAsync(CancellationToken ct = default)
+    {
+        var deliveryMethodes = await _unitOfWork.GetRepository<DeliveryMethod, int>().GetAllAsync(ct);
+
+        if (deliveryMethodes.Any())
+        {
+            return Result<IReadOnlyList<DeliveryMethodDto>>.Ok(_mapper.Map<IReadOnlyList<DeliveryMethodDto>>(deliveryMethodes));
+        }
+        else
+        {
+            return Error.NotFound("No Delivery Methodes Found");
+        }
+    }
+
     public async Task<Result<OrderToReturnDto>> GetOrderByIdAndEmailForUserAsync(Guid id, string email, CancellationToken ct = default)
     {
         var order = await _unitOfWork.GetRepository<Order, Guid>().GetByIdAsync(new OrderSpecifications(id, email), ct);

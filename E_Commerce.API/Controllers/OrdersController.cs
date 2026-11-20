@@ -37,4 +37,12 @@ public class OrdersController : ApiBaseController
         return ToActionResult(await _orderService.GetOrderByIdAndEmailForUserAsync(id, GetEmailFromToken(), ct));
 
     }
+
+    [AllowAnonymous]
+    [HttpGet("DeliverMethods")]
+
+    public async Task<ActionResult<IReadOnlyList<DeliveryMethodDto>>> GetDeliveryMethods(CancellationToken ct)
+    {
+        return ToActionResult(await _orderService.GetDeliveryMethodsAsync(ct));
+    }
 }
