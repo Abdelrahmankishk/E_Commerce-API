@@ -29,6 +29,11 @@ internal class OrderService : IOrderService
         if (basket.Items.Count == 0)
             return Error.Validation("Basket Is Empty", $"Can not Create Order With Basket Id {basket.Id}");
 
+        var existingOrder = await _unitOfWork.GetRepository<Order, Guid>().GetByIdAsync(new PaymentIntentSpec(basket.PaymentIntentId));
+
+        if (existingOrder != null)
+            _unitOfWork.GetRepository<Order, Guid>().Delete(existingOrder);
+
         // Items (Order Item)
         var orderItems = new List<OrderItem>(basket.Items.Count);
         var productIds = basket.Items.Select(x => x.Id).ToHashSet();
@@ -54,8 +59,6 @@ internal class OrderService : IOrderService
                 }
 
             });
-
-
         }
 
         //ShipToAddress(OrderAddress)
@@ -74,7 +77,7 @@ internal class OrderService : IOrderService
 
 
         //Create Order
-        var order = new Order(email, orderAddress, orderItems, deliveryMethod, subTotal);
+        var order = new Order(email, orderAddress, orderItems, deliveryMethod, subTotal,basket.PaymentIntentId);
 
         _unitOfWork.GetRepository<Order, Guid>().Add(order);
         var result = await _unitOfWork.SaveChangesAsync(ct);

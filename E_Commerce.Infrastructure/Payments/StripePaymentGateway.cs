@@ -12,6 +12,7 @@ internal class StripePaymentGateway : IPaymentGateway
     public StripePaymentGateway(IOptions<PaymentGatwaySettings> options)
     {
         _payment = options.Value;
+        StripeConfiguration.ApiKey = options.Value.SecretKey;
     }
     public async Task<PaymentIntentResult> CreatePaymentIntentAsync(decimal amount, string currenct, CancellationToken ct = default)
     {
